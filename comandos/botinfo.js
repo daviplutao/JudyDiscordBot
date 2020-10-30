@@ -33,7 +33,7 @@ Promise.all(promises).then(async results => {
   .addField(`<a:lunox_mundo:760149947445674034>・Servidores`,`\`${totalGuilds} servidores\``)
   .addField('<:stafftools:755502350499577867>・Canais', `\`${totalCanais} canais\``)
   .addField(`<:user:755517685487370351>・Usuários`, `\`${totalUsers} usuários\``)
-  .addField(`<:memRam:755518278272811188>・Memória RAM`,`\`${(process.memoryUsage().rss / 1024 / 1024).toFixed(2)}MB de 1024MB\``)
+  .addField(`<:memRam:755518278272811188>・Memória RAM`,`\`${(process.memoryUsage().rss / 1024 / 1024).toFixed(2)}MB de 16000MB\``)
   .addField(`💻・CPU`, `\`${(process.cpuUsage().system / 1024 / 1024).toFixed(2)}% de CPU\``)
      message.channel.send(botinfo)
   })

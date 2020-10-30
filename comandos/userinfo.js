@@ -91,5 +91,5 @@ const badge = membro.flags.toArray().join(' ').replace('HOUSE_BALANCE', '<:hypes
 }
 exports.help = {
     name: 'userinfo',
-    aliases: ['ui']
+    aliases: ['ui' , 'test']
 }

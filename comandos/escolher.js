@@ -10,7 +10,7 @@ module.exports.run = async (client, message, args) => {
   if (choose.length < 2) {
     message.channel.send('<:negado:755502002619940935> **Eu preciso de duas opções para escolher**');
   } else {
-    message.channel.send({embed: chooseEmbed});
+    message.channel.send(`${message.author}, Como você pediu eu escolhi pra você !!!` , {embed: chooseEmbed});
   }
 
 }

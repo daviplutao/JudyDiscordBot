@@ -1,5 +1,5 @@
 const config = require('./config.json')
-const chalk = require('chalk');
+const colors = require('colors');
 const { ShardingManager } = require('discord.js')
 const shard = new ShardingManager('./bot.js', {
   token: config.token,
@@ -7,4 +7,4 @@ const shard = new ShardingManager('./bot.js', {
 });
 
 shard.spawn(3);
-shard.on('shardCreate', shards => console.log(chalk.red(`\n[SHARD] Shards iniciadas\n[BOT] Estou Online`)));
+shard.on('shardCreate', shards => console.log(colors.brightBlue(`[SHARDS] Shard ${shards.id}/${shard.totalShards}\nㅤ`)));

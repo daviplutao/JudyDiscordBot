@@ -4,11 +4,20 @@ const talkedRecently = new Set();
 app.get("/", (request, response) => {
   const ping = new Date();
   ping.setHours(ping.getHours() - 3);
-  console.log(`Ping recebido às ${ping.getUTCHours()}:${ping.getUTCMinutes()}:${ping.getUTCSeconds()}`);
   response.sendStatus(200);
+  console.log(`Ping !`)
 });
 
 app.listen(process.env.PORT);
+
+const {connect} = require("mongoose");
+
+connect(process.env.MONGO, { 
+    useNewUrlParser: true,
+   useUnifiedTopology: true
+}).then(function () { 
+    console.log('DataBase ligada.');
+})
 
 const Discord = require("discord.js");
 const client = new Discord.Client({ disableMentions: 'everyone', ws: { properties: { $browser: 'Discord Android' } } })
@@ -18,7 +27,18 @@ const ms = require('ms')
 const fs = require('fs');
 const colors = require("colors");
 const moment = require('moment')
-const comando = new Discord.WebhookClient('769350395910029322', 'NFbdVZOEJPZMZwmeFGzu79x9i2cf7Li_Iu1tlkYrXrqeRhhp30CFHykGoEBE8-kzEspS')
+const glob = require('glob');
+const DBL = require("dblapi.js");
+const comando = new Discord.WebhookClient('762679636081246229', process.env.LOG)
+const dbl = new DBL(process.env.SERVER, client);
+// Optional events
+dbl.on('posted', () => {
+  console.log('Server count posted!');
+})
+
+dbl.on('error', e => {
+ console.log(`Oops! ${e}`);
+})
 
 client.on('message', message => {
      if (message.author.bot) return;
@@ -35,6 +55,7 @@ client.on('message', message => {
  if (!message.content.toLowerCase().startsWith(prefix)) return;
    if (message.author.bot) return;
    if (message.channel.type == 'dm') return;
+	 console.log(colors.brightWhite(`[LOG DE COMANDOS] Usuário: ${message.author.tag} (${message.author.id})\nComando: ${message.content}\nㅤ`))
             var guild = message.guild;
                     let embeddiretor = new Discord.MessageEmbed()
                         .setTitle('Log de comandos!')
@@ -50,10 +71,11 @@ client.on('message', message => {
 		 .setColor(`#FF00C2`)
 		 .setFooter(`${message.guild.name}・${message.guild.id}`)
      if(message.content.startsWith(`<@!${client.user.id}>`) || message.content.startsWith(`<@${client.user.id}>`)){
-      return message.channel.send(mention)}
-         if (!message.content.toLowerCase().startsWith(prefix.toLowerCase())) return;
-     if (message.content.startsWith(`<@!${client.user.id}>`) || message.content.startsWith(`<@${client.user.id}>`)) return;
+      return message.reply("**Olá eu sou a Judy, meu prefixo é `j.`, use `j.ajuda` para ver meus comandos.**")}
 
+         if (!message.content.toLowerCase().startsWith(prefix.toLowerCase())) return;
+
+         if (!message.content.toLowerCase().startsWith(prefix.toLowerCase())) return;
      
 
  client.on('message', message => {
@@ -92,10 +114,10 @@ cooldowns[message.author.id].lastCmd = Date.now()
     } catch (err) {
     console.error(colors.red('Erro:' + err));
     
-  }
-});
+}
+  });
 
-const adicionada = new Discord.WebhookClient('769350395910029322', 'NFbdVZOEJPZMZwmeFGzu79x9i2cf7Li_Iu1tlkYrXrqeRhhp30CFHykGoEBE8-kzEspS')
+const adicionada = new Discord.WebhookClient('762679636081246229', process.env.LOG)
 client.on("guildCreate", guild => {
   let embed = new Discord.MessageEmbed()
   .setTitle(`Fui adicionada em um servidor!`)
@@ -107,7 +129,7 @@ client.on("guildCreate", guild => {
   
 })
 // Log de Servidor
-const removida = new Discord.WebhookClient('769350395910029322', 'NFbdVZOEJPZMZwmeFGzu79x9i2cf7Li_Iu1tlkYrXrqeRhhp30CFHykGoEBE8-kzEspS')
+const removida = new Discord.WebhookClient('762679636081246229', process.env.LOG)
 client.on("guildDelete", guild => {
   let embed = new Discord.MessageEmbed()
   .setTitle(`Fui removida de um servidor!`)
@@ -117,6 +139,8 @@ client.on("guildDelete", guild => {
   .setColor('RANDOM')
   removida.send(embed);
 });
+
+
 
 client.on("ready", async () => {
   let activities = [
@@ -129,6 +153,7 @@ client.on("ready", async () => {
   setInterval( () => client.user.setActivity(`${activities[i++ % activities.length]}`, {
         type: "WATCHING"
       }), 1000 * 60); 
+			console.log(colors.brightCyan(`[BOT] Conectado na conta: ${client.user.tag}\nㅤ`))
   client.user
       .setStatus()
       .catch(console.error);
